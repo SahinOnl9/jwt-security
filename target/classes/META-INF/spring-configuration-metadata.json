@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "",
+      "type": "org.websec.jwtsecurity.config.Configprops",
+      "sourceType": "org.websec.jwtsecurity.config.Configprops"
+    }
+  ],
+  "properties": [
+    {
+      "name": "auth-disabled-paths",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.websec.jwtsecurity.config.Configprops"
+    }
+  ],
+  "hints": []
+}

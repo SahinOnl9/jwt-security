@@ -9,4 +9,5 @@ public class JwtSecurityApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JwtSecurityApplication.class, args);
 	}
+	
 }

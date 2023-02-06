@@ -1,7 +1,5 @@
 package org.websec.jwtsecurity.security;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +12,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.websec.jwtsecurity.config.Configprops;
 import org.websec.jwtsecurity.filter.CustomAuthenticationFilter;
 import org.websec.jwtsecurity.filter.CustomAuthorizationFilter;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableWebSecurity
 @SuppressWarnings("deprecation")
+@Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -27,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	private Configprops configprops;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,10 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		Arrays.asList("/token/**", "/v3/api-docs/**", "/swagger-ui/**","/swagger-ui.html").forEach(path -> {
+		configprops.getAuthDisabledPaths().forEach(path -> {
 			try {
 				http.authorizeHttpRequests().antMatchers(path).permitAll();
 			} catch (Exception e) {
+				log.error("Severe Error has occured: {}", e.getMessage());
 				e.printStackTrace();
 			}
 		});

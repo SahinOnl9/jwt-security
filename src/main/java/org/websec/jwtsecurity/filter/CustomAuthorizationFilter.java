@@ -33,15 +33,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String servletPath = request.getServletPath();
-		log.info("OPR path: " + servletPath);
+		
 		List<String> authDisabledPath = new ArrayList<>();
 		authDisabledPath.add("/token");
 		authDisabledPath.add("/token/refresh");
 		authDisabledPath.add("/swagger-ui/");
 
-		String authHeader = request.getHeader("Authorization");
-
-		System.out.println("authHeader: " + authHeader);
 
 		if (authDisabledPath.contains(servletPath)) {
 			filterChain.doFilter(request, response);
