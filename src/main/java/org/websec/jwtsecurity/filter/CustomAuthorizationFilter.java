@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -17,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.websec.jwtsecurity.config.ConfigPathHelper;
+import org.websec.jwtsecurity.config.JwtConfigProperties;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,23 +25,21 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+	
+	private final JwtConfigProperties jwtConfigProperties;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String servletPath = request.getServletPath();
-		
-		List<String> authDisabledPath = new ArrayList<>();
-		authDisabledPath.add("/token");
-		authDisabledPath.add("/token/refresh");
-		authDisabledPath.add("/swagger-ui/");
 
-
-		if (authDisabledPath.contains(servletPath)) {
+		if (ConfigPathHelper.getAuthDisabledPaths().contains(servletPath)) {
 			filterChain.doFilter(request, response);
 		} else {
 			String authorizationHeader = request.getHeader("Authorization");
@@ -49,7 +48,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 			if (authorizationHeader != null && authorizationHeader.startsWith(authKey)) {
 				try {
 					String token = authorizationHeader.substring(authKey.length());
-					Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+					Algorithm algorithm = Algorithm.HMAC256(jwtConfigProperties.getSecretKey().getBytes());
 
 					JWTVerifier jwtVerifier = JWT.require(algorithm).build();
 					DecodedJWT decodedJWT = jwtVerifier.verify(token);
@@ -65,11 +64,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
 					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 							username, null, authorities);
-
+					request.setAttribute("username", username);
 					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 					filterChain.doFilter(request, response);
 				} catch (Exception e) {
 					log.error("Error log: {}", e.getMessage());
+					e.printStackTrace();
 					response.setHeader("error", e.getMessage());
 					response.setStatus(HttpStatus.FORBIDDEN.value());
 

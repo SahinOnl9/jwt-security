@@ -18,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.websec.jwtsecurity.config.JwtConfigProperties;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -31,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
+	private final JwtConfigProperties jwtConfigProperties;
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -51,21 +53,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 			Authentication authentication) throws IOException, ServletException {
 
 		User user = (User) authentication.getPrincipal();
-		Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+		Algorithm algorithm = Algorithm.HMAC256(jwtConfigProperties.getSecretKey().getBytes());
 
 		String accessToken = JWT.create().withSubject(user.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfigProperties.getAccessTokenValidity() * 60 * 1000))
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles",
 						user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.sign(algorithm);
 
 		String refreshToken = JWT.create().withSubject(user.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfigProperties.getRefreshTokenValidity() * 60 * 1000))
 				.withIssuer(request.getRequestURL().toString()).sign(algorithm);
-
-//		response.setHeader("access_token", accessToken);
-//		response.setHeader("refresh_token", refreshToken);
 
 		Map<String, String> tokenMap = new HashMap<>(2);
 		tokenMap.put("access_token", accessToken);

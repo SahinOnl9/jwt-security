@@ -1,16 +1,26 @@
 {
   "groups": [
     {
-      "name": "",
-      "type": "org.websec.jwtsecurity.config.Configprops",
-      "sourceType": "org.websec.jwtsecurity.config.Configprops"
+      "name": "jwtconfig",
+      "type": "org.websec.jwtsecurity.config.JwtConfigProperties",
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
     }
   ],
   "properties": [
     {
-      "name": "auth-disabled-paths",
-      "type": "java.util.List<java.lang.String>",
-      "sourceType": "org.websec.jwtsecurity.config.Configprops"
+      "name": "jwtconfig.access-token-validity",
+      "type": "java.lang.Integer",
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
+    },
+    {
+      "name": "jwtconfig.refresh-token-validity",
+      "type": "java.lang.Integer",
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
+    },
+    {
+      "name": "jwtconfig.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
     }
   ],
   "hints": []
