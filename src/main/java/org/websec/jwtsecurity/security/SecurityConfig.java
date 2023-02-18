@@ -36,28 +36,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+		auth
+		.userDetailsService(userDetailsService)
+		.passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		CustomAuthenticationFilter customAuthFilter = new CustomAuthenticationFilter(authenticationManagerBean(),
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter(jwtConfigProperties);
+		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),
 				jwtConfigProperties);
-		customAuthFilter.setFilterProcessesUrl("/token");
+		
+		// By Default: /login -> /token
+		customAuthenticationFilter.setFilterProcessesUrl("/token");
 
-		http.csrf().disable();
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.csrf().disable();
+		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		//
 		ConfigPathHelper.getAuthDisabledPaths().forEach(path -> {
 			try {
-				http.authorizeHttpRequests().antMatchers(path).permitAll();
+				httpSecurity.authorizeHttpRequests().antMatchers(path).permitAll();
 			} catch (Exception e) {
 				log.error("Severe Error has occured: {}", e.getMessage());
 				e.printStackTrace();
 			}
 		});
-		http.authorizeHttpRequests().anyRequest().authenticated();
-		http.addFilter(customAuthFilter);
-		http.addFilterBefore(new CustomAuthorizationFilter(jwtConfigProperties),
+		httpSecurity.authorizeHttpRequests().anyRequest().authenticated();
+		
+		//
+		httpSecurity.addFilter(customAuthenticationFilter);
+		httpSecurity.addFilterBefore(customAuthorizationFilter,
 				UsernamePasswordAuthenticationFilter.class);
 	}
 

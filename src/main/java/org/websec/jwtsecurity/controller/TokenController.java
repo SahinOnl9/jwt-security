@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.websec.jwtsecurity.model.AppUser;
 import org.websec.jwtsecurity.model.Role;
@@ -33,6 +35,9 @@ public class TokenController {
 
 	@Autowired
 	private UserService userService;
+
+	@PostMapping
+	public void getToken(@RequestParam String username, @RequestParam String password) {}
 
 	@GetMapping("/refresh")
 	public void refreshToken(HttpServletRequest request, HttpServletResponse response)
@@ -54,8 +59,8 @@ public class TokenController {
 
 				String accessToken = JWT.create().withSubject(appUser.getUsername())
 						.withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-						.withIssuer(request.getRequestURL().toString()).withClaim("roles", appUser.getRoles()
-								.stream().map(Role::getName).collect(Collectors.toList()))
+						.withIssuer(request.getRequestURL().toString())
+						.withClaim("roles", appUser.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
 						.sign(algorithm);
 
 				Map<String, String> tokenMap = new HashMap<>(2);

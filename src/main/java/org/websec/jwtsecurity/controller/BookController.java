@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.websec.jwtsecurity.model.Book;
 import org.websec.jwtsecurity.service.BookService;
+import org.websec.jwtsecurity.validator.BookValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,7 @@ public class BookController {
 	@PostMapping("/save-all")
 	public ResponseEntity<List<Book>> addBooks(@RequestBody List<Book> books, HttpServletRequest request) {
 		String username = request.getAttribute("username").toString();
+		BookValidator.validateBooks(books);
 		log.info("User: {}", username);
 		return ResponseEntity.created(null).body(bookService.addBooks(books, username));
 	}
