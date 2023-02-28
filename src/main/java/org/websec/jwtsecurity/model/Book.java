@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Builder
 public class Book extends AbstractTimestampEntity implements Serializable {
 
 	private static final long serialVersionUID = 2102794404597870366L;
@@ -32,13 +34,19 @@ public class Book extends AbstractTimestampEntity implements Serializable {
 	private Long isbn;
 
 	@NotNull(message = "A Books title can not be null.")
-	@Size(min = 1, max = 50, message = "Invalid size of title, please keep it between 1 to 50")
+	@Size(min = 1, max = 100, message = "Invalid size of title, please keep it between 1 to 50")
 	@Column(nullable = false, unique = true)
 	private String title;
 
 	@Size(min = 5, max = 50, message = "Invalid size of authors name, please keep it between 1 to 50")
 	@NotNull(message = "A Books author can not be null.")
 	private String author;
+	
+	private int rating;
+	
+	private String category;
+	
+	private int reviewPoints;
 
 	@JsonIgnore
 	private String createdBy;

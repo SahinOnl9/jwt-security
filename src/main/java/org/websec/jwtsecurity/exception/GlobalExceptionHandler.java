@@ -1,5 +1,6 @@
 package org.websec.jwtsecurity.exception;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,9 +10,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.websec.jwtsecurity.model.ErrorResponse;
 import org.websec.jwtsecurity.model.ValidationError;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,41 @@ public class GlobalExceptionHandler {
 	public Set<String> handleInvalidBookException(InvalidBookException ex) {
 		return ex.getErrSet();
 	}
+	
+	
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<ErrorResponse> 
+		handelNullPointer(
+				NullPointerException npe){
+		
+		ErrorResponse er = new ErrorResponse();
+		er.setMsg(npe.getMessage());
+		er.setErrCode(496);
+		er.setDesc("Getting Null Pointer.");
+		er.setTimestamp(new Date().toString());
+		
+		ResponseEntity<ErrorResponse> response 
+		= new ResponseEntity<>(er, HttpStatus.BAD_REQUEST);
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Constraint violation exception handler

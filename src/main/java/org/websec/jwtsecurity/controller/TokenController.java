@@ -84,4 +84,9 @@ public class TokenController {
 		}
 
 	}
+	
+	@GetMapping("/x")
+	public void error() {
+		throw new NullPointerException("Dummy Exception");
+	}
 }
