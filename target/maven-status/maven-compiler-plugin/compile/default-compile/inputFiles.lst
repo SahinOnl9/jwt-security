@@ -5,6 +5,8 @@ E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsec
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\service\UserService.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\repository\BookRepository.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\controller\UserController.java
+E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\repository\BookDao.java
+E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\SearchCriteria.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\Role.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\config\OpenAPI30Configuration.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\service\BookService.java
@@ -14,6 +16,7 @@ E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsec
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\JwtSecurityApplication.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\RoleToUserForm.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\AbstractTimestampEntity.java
+E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\ErrorResponse.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\AppUser.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\model\Book.java
 E:\Workspaces\spring_boot_workspace\jwt-security\src\main\java\org\websec\jwtsecurity\repository\AppUserRepo.java
