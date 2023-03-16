@@ -10,14 +10,12 @@
     {
       "name": "jwtconfig.access-token-validity",
       "type": "java.lang.Integer",
-      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties",
-      "defaultValue": 0
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
     },
     {
       "name": "jwtconfig.refresh-token-validity",
       "type": "java.lang.Integer",
-      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties",
-      "defaultValue": 0
+      "sourceType": "org.websec.jwtsecurity.config.JwtConfigProperties"
     },
     {
       "name": "jwtconfig.secret-key",

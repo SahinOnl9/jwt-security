@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.websec.jwtsecurity.model.Activity;
 import org.websec.jwtsecurity.model.AppUser;
 import org.websec.jwtsecurity.model.Role;
 import org.websec.jwtsecurity.service.UserService;
@@ -37,7 +38,8 @@ public class TokenController {
 	private UserService userService;
 
 	@PostMapping
-	public void getToken(@RequestParam String username, @RequestParam String password) {}
+	public void getToken(@RequestParam String username, @RequestParam String password) {
+	}
 
 	@GetMapping("/refresh")
 	public void refreshToken(HttpServletRequest request, HttpServletResponse response)
@@ -84,9 +86,18 @@ public class TokenController {
 		}
 
 	}
-	
+
 	@GetMapping("/x")
 	public void error() {
 		throw new NullPointerException("Dummy Exception");
+	}
+
+	@GetMapping("/activity")
+	public void testEnum(@RequestParam Activity activity) {
+		processData(activity.getText());
+	}
+
+	private void processData(String text) {
+		System.out.println("Selected activity: " + text);
 	}
 }
