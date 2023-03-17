@@ -13,6 +13,6 @@ import org.websec.jwtsecurity.model.manytomany.CourseRating;
 public interface CourseRatingRepository extends JpaRepository<CourseRating, Long> {
 
 	@Query("SELECT crs.firstName FROM CourseRating cr inner join cr.student crs "
-			+ "where cr.course.courseName = :courseId")
-	List<String> findStudentsByCourseId(@Param("courseId") String courseName);
+			+ "where cr.course.courseName = :courseName")
+	List<String> findStudentsByCourseId(@Param("courseName") String courseName);
 }

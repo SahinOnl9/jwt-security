@@ -39,7 +39,7 @@ public class CourseRating extends AbstractTimestampEntity implements Serializabl
 	private Student student;
 
 	@ManyToOne
-	@JoinColumn(name = "course_id")
+	@JoinColumn(name = "course_id", referencedColumnName = "courseName")
 	private Course course;
 
 	private int rating;
